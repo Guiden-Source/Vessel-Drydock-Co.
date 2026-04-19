@@ -82,7 +82,7 @@ const Sparkline = ({
 
 // Main Dashboard Page
 import { mockSnapshot, OperationSnapshot } from '@/lib/mockSnapshot';
-import { supabase } from '@/lib/supabaseClient';
+import { loadSnapshotFromSupabase } from '@/lib/loadSnapshotFromSupabase';
 
 export default function VesselDashboard() {
   const [snapshot, setSnapshot] = React.useState<OperationSnapshot>(mockSnapshot);
@@ -90,29 +90,16 @@ export default function VesselDashboard() {
 
   React.useEffect(() => {
     async function loadData() {
-      if (!supabase) {
-        console.log('Cliente Supabase não inicializado. Renderizando mock.');
-        setIsLoading(false);
-        return;
-      }
-
       try {
-        // Tentativa de buscar dados reais da tabela (sem RLS por enquanto)
-        const { data, error } = await supabase
-          .from('operation_snapshots')
-          .select('*')
-          .limit(1)
-          .single();
+        const snapshotFromDb = await loadSnapshotFromSupabase();
 
-        if (error) {
-          console.info('Ainda não há dados reais no Supabase ou tabela inexistente. Usando mock:', error.message);
-        } else if (data) {
-          // Supondo que você criou uma tabela onde o JSON inteiro fique numa coluna 'payload',
-          // ou a própria linha (data) contenha as keys da interface OperationSnapshot
-          setSnapshot(data.payload || data);
+        if (snapshotFromDb) {
+          setSnapshot(snapshotFromDb);
+        } else {
+          console.info('[Vessel] Usando mockSnapshot (nenhum snapshot encontrado ou erro ao carregar do Supabase).');
         }
       } catch (err) {
-        console.error('Exceção ao conectar no Supabase:', err);
+        console.error('[Vessel] Exceção ao carregar dados do Supabase:', err);
       } finally {
         setIsLoading(false);
       }

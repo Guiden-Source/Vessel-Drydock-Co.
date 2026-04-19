@@ -5,3 +5,5 @@ coverage/
 *.log
 .env*
 !.env.example
+Supabase/supabase-credentials.md
+*.zip
