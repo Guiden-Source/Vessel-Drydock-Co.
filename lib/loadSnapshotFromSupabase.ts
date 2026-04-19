@@ -5,6 +5,11 @@ import type { OperationSnapshot } from './mockSnapshot';
 const ORG_ID_TESTE = '7c0a5826-6da1-472b-8e1a-9633d15492d2';
 
 export async function loadSnapshotFromSupabase(): Promise<OperationSnapshot | null> {
+  if (!supabase) {
+    console.warn('[Vessel] Cliente Supabase não inicializado.');
+    return null;
+  }
+
   const { data: snapshotRow, error: snapshotError } = await supabase
     .from('operation_snapshots')
     .select('*')
