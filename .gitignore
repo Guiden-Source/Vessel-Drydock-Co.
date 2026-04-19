@@ -1,32 +1,7 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-.env
-.env.*
-!.env.example
-
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Mac
+node_modules/
+.next/
+coverage/
 .DS_Store
-
-# Zips
-*.zip
-Supabase/supabase-credentials.md
+*.log
+.env*
+!.env.example
