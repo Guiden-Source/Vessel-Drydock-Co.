@@ -12,7 +12,7 @@ export async function loadSnapshotFromSupabase(): Promise<OperationSnapshot | nu
     .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   if (snapshotError || !snapshotRow) {
     console.warn('[Vessel] Não foi possível carregar operation_snapshot ativo:', snapshotError?.message);
